@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+
+    <!-- Internal CSS -->
+    <style>
+        /* General page layout */
+        .feedback-container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        /* Header Styling */
+        .feedback-header {
+            font-size: 32px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Feedback form styling */
+        .feedback-form {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-form:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Label Styling */
+        .feedback-label {
+            font-size: 18px;
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        /* Input styling */
+        .form-control {
+            border-radius: 8px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            font-size: 16px;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+            outline: none;
+        }
+
+        /* Submit button */
+        .btn-submit {
+            background-color: #3498db;
+            color: white;
+            font-size: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #2980b9;
+            cursor: pointer;
+        }
+
+        /* Success message styling */
+        .feedback-message {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        /* Form container padding */
+        .feedback-form-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .feedback-header {
+                font-size: 28px;
+            }
+
+            .feedback-form {
+                padding: 30px;
+            }
+
+            .form-control {
+                font-size: 14px;
+            }
+
+            .btn-submit {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+{% block content %}
+    <div class="container feedback-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 feedback-form-container">
+                <h2 class="feedback-header">Give Us Your Feedback</h2>
+                <form method="POST" class="feedback-form shadow p-4 rounded">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="feedback-label" for="username">Name</label>
+                        <input type="text" name="username" class="form-control" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="feedback-label" for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="feedback-label" for="feedback_text">Feedback</label>
+                        <textarea name="feedback_text" class="form-control" id="feedback_text" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit btn btn-primary btn-block">Submit Feedback</button>
+                </form>
+            </div>
+        </div>
+
+        {% if messages %}
+            <div class="feedback-message mt-3">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+</body>
+</html>

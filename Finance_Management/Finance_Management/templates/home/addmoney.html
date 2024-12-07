@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'addmoney.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>My Wallet</title>
+    <style>
+        /* General Page Styling */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            background: linear-gradient(135deg, #007BFF, #00C6FF);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container2 {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
+            animation: fadeIn 1s;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .form-check {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-check-label {
+            font-weight: 500;
+        }
+
+        /* Button Styling */
+        .b2 {
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .b2:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        }
+
+        .b2:active {
+            transform: scale(0.98);
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container2">
+        <h1>My Wallet</h1>
+        <form method="post" action="/addmoney_submission/">
+            {% csrf_token %}
+            <div class="form-check">
+                <label class="form-check-label" for="add_money_expense">
+                    <input class="form-check-input" type="radio" name="add_money" id="add_money_expense" value="Expense" required>
+                    Expense
+                </label>
+                <label class="form-check-label" for="add_money_income">
+                    <input class="form-check-input" type="radio" name="add_money" id="add_money_income" value="Income" required>
+                    Income
+                </label>
+            </div>
+            <label for="quantity">Amount:</label>
+            <input type="number" name="quantity" id="quantity" required>
+            <label for="date">Expense Date:</label>
+            <input type="date" name="Date" id="date" required>
+            <label for="category">Select Category:</label>
+            <select name="Category" id="category" required>
+                <option value="Food">Food</option>
+                <option value="Travel">Travel</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Necessities">Necessities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Others">Others</option>
+            </select>
+            <button type="submit" class="b2">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

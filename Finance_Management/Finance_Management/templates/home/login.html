@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% block body %}
+<style>
+    /* Global body styling with gradient and overlay */
+    body {
+        background: linear-gradient(to bottom right, #4facfe, #00f2fe) no-repeat center center fixed;
+        background-size: cover;
+        color: #333;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Overlay effect for contrast */
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent dark overlay */
+        z-index: -1;
+    }
+
+    /* Card Header Styling */
+    .card-header {
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        color: white;
+        text-align: center;
+        font-size: 1.6rem;
+        padding: 15px;
+        border-radius: 12px 12px 0 0;
+    }
+
+    /* Form Styling */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #444;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #4facfe;
+        box-shadow: 0 0 8px rgba(79, 172, 254, 0.6);
+        outline: none;
+    }
+
+    /* Button Styling */
+    .btn-primary {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 30px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(to right, #00f2fe, #4facfe);
+        transform: scale(1.05);
+    }
+
+    /* Swing Animation */
+    .btn-swing {
+        animation: swing 0.5s forwards;
+    }
+
+    @keyframes swing {
+        0% { transform: rotate(0deg); }
+        20% { transform: rotate(10deg); }
+        40% { transform: rotate(-10deg); }
+        60% { transform: rotate(5deg); }
+        80% { transform: rotate(-5deg); }
+        100% { transform: rotate(0deg); }
+    }
+
+    /* Link Styling */
+    .link a {
+        color: #4facfe;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .link a:hover {
+        color: #00f2fe;
+        text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .card-header {
+            font-size: 1.4rem;
+        }
+
+        .form-control {
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+
+<div class="bg-text">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-start"> <!-- Align to the left -->
+                        <div class="col-lg-3"> <!-- Adjust column size to 3 for smaller width -->
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header">
+                                    <h3 class="text-center font-weight-light my-4">Finance Management </h3>
+                                </div>
+                                <div class="card-body">
+                                    <form action='/handlelogin/' method='post' id="loginForm">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label style="color: black;" class="small mb-1" for="loginuname">Username</label>
+                                            <input class="form-control py-4" id="loginuname" name="loginuname" type="text" placeholder="Enter user name" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="color: black;" class="small mb-1" for="loginpassword1">Password</label>
+                                            <input class="form-control py-4" id="loginpassword1" name="loginpassword1" type="password" placeholder="Enter password" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" required />
+                                                <label style="color: black;" class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <div class="btnn">
+                                                <button type="submit" class="btn btn-primary" id="loginButton">Login</button><br>
+                                            </div>
+                                            <div class="link">
+                                                <a class="small" href="\reset_password">Forgot Password?</a><br>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="card-footer text-center">
+                                        <div class="small"><a href="/register">Need an account? Sign up!</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<script>
+    const loginButton = document.getElementById('loginButton');
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Add the swing animation class
+        loginButton.classList.add('btn-swing');
+
+        // Wait for the animation to complete before navigating
+        setTimeout(() => {
+            // Submit the form after the animation
+            this.submit();
+        }, 500); // Duration of the swing animation
+    });
+</script>
+{% endblock body %}

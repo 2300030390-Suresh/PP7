@@ -1,0 +1,298 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'addmoney.css' %}">
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+    /* Vibrant Green Gradient Theme */
+    .bg-dark {
+        background: linear-gradient(90deg, #003300 0%, #006600 50%, #00cc66 100%) !important; /* Smooth gradient for the navbar */
+    }
+
+    .sb-sidenav-dark {
+        background: linear-gradient(180deg, #002200 0%, #004d00 50%, #009933 100%); /* Sidebar gradient with vertical flow */
+    }
+
+    .sb-sidenav-menu .nav-link {
+        color: #e6ffe6; /* Soft white-green for links */
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .sb-sidenav-menu .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2); /* Brighter hover effect for links */
+        color: #ffffff; /* Ensure text is fully visible on hover */
+    }
+
+    .sb-sidenav-footer {
+        background-color: rgba(0, 77, 0, 0.8); /* Darker green footer with transparency */
+        color: #e6ffe6; /* Soft white-green for footer text */
+    }
+
+    .sb-topnav .navbar-brand {
+        color: #ffffff; /* Clean white for the brand */
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+    }
+
+/* Modern Button Design */
+.btn-budget {
+    background: linear-gradient(135deg, #4caf50, #81c784); /* Gradient for the button */
+    color: white; /* White text for contrast */
+    border: none; /* No border */
+    padding: 12px 24px; /* Padding for button size */
+    font-size: 1.2rem; /* Large font for better visibility */
+    border-radius: 8px; /* Rounded edges */
+    display: inline-flex; /* Flex layout */
+    align-items: center; /* Center align icon and text */
+    gap: 10px; /* Space between icon and text */
+    transition: background 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    cursor: pointer; /* Pointer cursor */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.btn-budget i {
+    font-size: 1.5rem; /* Icon size */
+}
+
+.btn-budget:hover {
+    background: linear-gradient(135deg, #388e3c, #66bb6a); /* Darker gradient on hover */
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow */
+}
+
+.btn-budget:active {
+    transform: translateY(1px); /* Button press effect */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); /* Reduced shadow */
+}
+
+
+    .sb-topnav .navbar-nav .nav-link {
+        color: #d9ffe6; /* Slightly lighter text for navbar links */
+        font-size: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .sb-topnav .navbar-nav .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1); /* Subtle hover background */
+        color: #ffffff; /* Brighter text on hover */
+    }
+
+    /* Custom Scrollbar for Sidebar */
+    .sb-sidenav-menu {
+        scrollbar-width: thin;
+        scrollbar-color: #006600 #003300; /* Custom scrollbar colors */
+    }
+
+    .sb-sidenav-menu::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .sb-sidenav-menu::-webkit-scrollbar-thumb {
+        background: #006600;
+        border-radius: 4px;
+    }
+
+    .sb-sidenav-menu::-webkit-scrollbar-track {
+        background: #003300;
+    }
+
+    /* Additional UI Enhancements */
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.15); /* Highlight active links */
+        border-radius: 8px;
+    }
+
+    .sb-sidenav-footer small {
+        font-size: 0.9rem;
+        color: #d9ffe6; /* Slightly lighter footer text */
+    }
+
+    /* Responsive Design Improvements */
+    @media (max-width: 768px) {
+        .sb-sidenav-menu .nav-link {
+            font-size: 0.9rem; /* Slightly smaller font for mobile */
+        }
+
+        .sb-topnav .navbar-brand {
+            font-size: 1rem; /* Adjust brand size for mobile */
+        }
+    }
+</style>
+
+
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="/index">My Finance Manager</a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form method="get" action="/searching" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+            {% csrf_token %}
+            <div class="input-group">
+                <!-- Search input can be added here -->
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto ml-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">Preferences</a>
+                    <a class="dropdown-item" href="#">Activity History</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/handleLogout">Sign Out</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <a class="nav-link" href="/index">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            HOME
+                        </a>
+                        <a class="nav-link" href="/profile">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                            PROFILE
+                        </a>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            FINANCIAL RECORDS
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link" href="/weekly">WEEKLY OVERVIEW</a>
+                                <a class="nav-link" href="/monthly">MONTHLY SUMMARY</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link" href="/yearly">
+                            <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
+                            YEARLY INSIGHTS
+                        </a>
+                        <a class="nav-link" href="/tables">
+                            <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
+                            TRANSACTION HISTORY
+                        </a>
+                        <a class="nav-link" href="/about_us">
+                            <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
+                            ABOUT US
+                        </a>
+                        <a class="nav-link" href="/finance_management">
+                            <div class="sb-nav-link-icon"><i class="fas fa-money-check-alt"></i></div>
+                            FINANCE MANAGEMENT GUIDE
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Signed in as:</div>
+                    {{ request.user.username }}
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show my-10" role="alert">
+                <strong>Notice:</strong> {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Track Your Expenses</h1>
+                    <img src="https://static.sheetgo.com/wp-content/uploads/2020/05/expense-tracker-dashboard.png" alt="logo" width="100%" height="500">
+                    <div class="card1">
+    <h4><b>Finance Tracker</b></h4>
+    <p>Manage your finances with ease! Add money or record expenses quickly.</p>
+    <button class="btn-budget" onclick="location.href='/addmoney';">
+        <i class="fa fa-wallet"></i> Add Money
+    </button>
+</div>
+
+                    <br><br>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table mr-1"></i>
+                            Overview of Transactions
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Amount</th>
+                                            <th>Category</th>
+                                            <th>Date</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for info in page_obj %}
+                                        <tr>
+                                            <td>{{ info.add_money }}</td>
+                                            <td>{{ info.quantity }}</td>
+                                            <td>{{ info.Category }}</td>
+                                            <td>{{ info.Date }}</td>
+                                            <td><a href="{% url 'expense_edit' info.id %}" class="btn btn-success">Modify</a></td>
+                                            <td><a href="{% url 'expense_delete' info.id %}" class="btn btn-danger">Remove</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="">
+                            Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination align-right float-right mr-auto">
+                                {% if page_obj.has_previous %}
+                                <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}>
+                                    <a class="page-link" href="?page=1" tabindex="-1">&laquo; First</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                                {% endif %}
+                                {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        <br>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/chart-area-demo.js"></script>
+    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/datatables-demo.js"></script>
+</body>
+
+</html>
